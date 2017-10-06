@@ -29,8 +29,8 @@ class Server extends EventEmitter {
     });
   }
 
-  listen(port, host, backlog, callback) {
-    this.server.listen(port, host, backlog, callback);
+  listen() {
+    this.server.listen.apply(this.server, arguments);
   }
 
   address() {
