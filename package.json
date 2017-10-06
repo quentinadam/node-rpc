@@ -1,6 +1,6 @@
 {
   "name": "quentinadam-rpc",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Simple remote procedure calling over TCP",
   "main": "index.js",
   "dependencies": {},

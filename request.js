@@ -39,7 +39,7 @@ async function getConnection(address) {
 async function request(address, data, options) {
   options = Object.assign({timeout: 60000}, options);
   let connection = await getConnection(address);
-  connection.setTimeout(timeout);
+  connection.setTimeout(options.timeout);
   return await new Promise((resolve, reject) => {
     const handleClose = (error) => {
       if (error) {
