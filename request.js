@@ -3,6 +3,17 @@ const Connection = require('./Connection');
 
 let connections = {};
 
+function parseAddress(address) {
+  let result;
+  if (result = /^\[(.+)\]:(\d+)$/.exec(address)) {
+    return {host: result[1], port: result[2]};
+  } else if (result = /^(.+):(\d+)$/.exec(address)) {
+    return {host: result[1], port: result[2]};
+  } else {
+    throw new Error(`Could not parse address ${address}`)
+  }
+}
+
 async function getConnection(address) {
   if (!connections[address]) connections[address] = [];
   let connection = connections[address].shift();
@@ -10,8 +21,7 @@ async function getConnection(address) {
     if (connection) {
       resolve(connection);
     } else {
-      let host = address.split(':')[0];
-      let port = address.split(':')[1];
+      let {host, port} = parseAddress(address);
       connection = new Connection(net.createConnection({host, port, timeout: 5000}));
       connection.on('connect', () => {
         resolve(connection);
@@ -26,8 +36,10 @@ async function getConnection(address) {
   });
 }
 
-async function request(address, data) {
+async function request(address, data, options) {
+  options = Object.assign({timeout: 60000}, options);
   let connection = await getConnection(address);
+  connection.setTimeout(timeout);
   return await new Promise((resolve, reject) => {
     const handleClose = (error) => {
       if (error) {

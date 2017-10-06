@@ -59,6 +59,10 @@ class Connection extends EventEmitter {
     });
   }
 
+  setTimeout(timeout) {
+    this.socket.setTimeout(timeout);
+  }
+
   handleConnect() {
     this.socket.on('connect', () => {
       this.emit('connect');
